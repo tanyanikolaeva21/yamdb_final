@@ -1,6 +1,6 @@
 # api_final_yatube 
 
-![example workflow](https://github.com/tanyanikolaeva21/yamdb_final/blob/master/.github/workflows/main.yml/badge.svg)
+![example workflow](https://github.com/tanya8621/api_yamdb/actions/workflows/yamdb_workflow.yml/badge.svg)
  
 
 ## Описание 
