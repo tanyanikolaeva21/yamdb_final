@@ -2,13 +2,13 @@ version: '3.8'
 
 services:
   db:
-    image: postgres:latest
+    image: postgres:13.0-alpine
     volumes:
       - db_data:/app/data/
     env_file:
       - ./.env
   web:
-    build: .
+    image: tanya8621/api_yamdb:latest
     restart: always
     volumes:
       - static_value:/app/static/
