@@ -72,6 +72,7 @@ def sign_up(request):
             [email],
         )
         return Response(status=status.HTTP_200_OK)
+
     else:
         serializer = SignUpSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
