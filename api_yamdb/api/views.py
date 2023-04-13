@@ -59,8 +59,11 @@ def sign_up(request):
     """Отправляет confirmation code на email корректного юзера."""
     username = request.data.get('username')
     email = request.data.get('email')
-    user = User.objects.filter(username=username, email=email).first()
-    if user:
+    try:
+        user = User.objects.get(username=username, email=email)
+    except ObjectDoesNotExist:
+        user = None
+    if User.objects.filter(username=username, email=email).exists():
         confirmation_code = default_token_generator.make_token(user)
         send_mail(
             'Ваш код регистрации',
@@ -69,23 +72,22 @@ def sign_up(request):
             [email],
         )
         return Response(status=status.HTTP_200_OK)
-    else:
-        serializer = SignUpSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = User.objects.create(
-            username=serializer.validated_data['username'],
-            email=serializer.validated_data['email'],
-        )
-        user.save()
-        confirmation_code = default_token_generator.make_token(user)
-        send_mail(
-            'Ваш код регистрации',
-            f'{confirmation_code}',
-            ADMIN_EMAIL,
-            [serializer.data['email']],
-        )
-        return Response(serializer.data, status=status.HTTP_200_OK)
 
+    serializer = SignUpSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    user = User.objects.create(
+        username=serializer.validated_data['username'],
+        email=serializer.validated_data['email'],
+    )
+    user.save()
+    confirmation_code = default_token_generator.make_token(user)
+    send_mail(
+        'Ваш код регистрации',
+        f'{confirmation_code}',
+        ADMIN_EMAIL,
+        [serializer.data['email']],
+    )
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
