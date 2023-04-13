@@ -1,4 +1,4 @@
-nam
+name: Django-app workflow
 on:
   push:
     branches: [ "master" ]
