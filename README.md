@@ -2,6 +2,7 @@
 
 ![example workflow](https://github.com/tanya8621/api_yamdb/actions/workflows/yamdb_workflow.yml/badge.svg)
  
+Server_IP: 130.193.54.144
 
 ## Описание 
 
