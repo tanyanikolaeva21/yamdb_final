@@ -72,21 +72,21 @@ def sign_up(request):
             [email],
         )
         return Response(status=status.HTTP_200_OK)
-    else:
-        serializer = SignUpSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = User.objects.create(
-            username=serializer.validated_data['username'],
-            email=serializer.validated_data['email'],
-        )
-        user.save()
-        confirmation_code = default_token_generator.make_token(user)
-        send_mail(
-            'Ваш код регистрации',
-            f'{confirmation_code}',
-            ADMIN_EMAIL,
-            [serializer.data['email']],
-        )
+
+    serializer = SignUpSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    user = User.objects.create(
+        username=serializer.validated_data['username'],
+        email=serializer.validated_data['email'],
+    )
+    user.save()
+    confirmation_code = default_token_generator.make_token(user)
+    send_mail(
+        'Ваш код регистрации',
+        f'{confirmation_code}',
+        ADMIN_EMAIL,
+        [serializer.data['email']],
+    )
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
